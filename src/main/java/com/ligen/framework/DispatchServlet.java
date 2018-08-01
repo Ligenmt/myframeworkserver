@@ -2,6 +2,8 @@ package com.ligen.framework;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.ligen.framework.annotation.RequestParam;
 import com.ligen.framework.bean.Data;
 import com.ligen.framework.bean.Handler;
 import com.ligen.framework.bean.Params;
@@ -18,7 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,37 +83,42 @@ public class DispatchServlet extends HttpServlet {
         Method mappingMethod = handler.getMappingMethod();
         //注入路由方法参数
         Class<?>[] parameterTypes = mappingMethod.getParameterTypes();
+        Parameter[] parameters = mappingMethod.getParameters();
         Object args[] = null;
         if (parameterTypes.length > 0) {
             args = new Object[parameterTypes.length];
             for (int i=0; i<parameterTypes.length; i++) {
                 Class<?> parameterType = parameterTypes[i];
+
                 String canonicalName = parameterType.getCanonicalName();
                 if (canonicalName.equals("javax.servlet.http.HttpServletRequest")) {
                     args[i] = req;
                 } else if (canonicalName.equals("javax.servlet.http.HttpServletResponse")) {
                     args[i] = resp;
                 }
-
-
+//                Annotation[] annotations = parameters[i].getAnnotations();
+                if (parameters[i].isAnnotationPresent(RequestParam.class)) {
+                    RequestParam requestParam = parameters[i].getAnnotation(RequestParam.class);
+                    String value = requestParam.value();
+                    String v = requestParams.get(value);
+                    if (v != null) {
+                        args[i] = v;
+                    }
+                }
             }
         }
-        Params p = new Params(requestParams);
-
+//        Params p = new Params(requestParams);
         Object o = ReflectionUtil.invokeMethod(controllerBean, mappingMethod, args);
-        if(o instanceof Data) {
-            Data data = (Data) o;
-            Object model = data.getModel();
-            if(model != null) {
-                resp.setContentType("application/json");
-                resp.setCharacterEncoding("utf-8");
-                PrintWriter writer = resp.getWriter();
-                String jsonStr = JSON.toJSONString(model);
-                writer.write(jsonStr);
-                writer.flush();
-                writer.close();
-            }
-        } else if(o instanceof String) {
+        if(o instanceof JSONObject) {
+            JSONObject data = (JSONObject) o;
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("utf-8");
+            PrintWriter writer = resp.getWriter();
+            String jsonStr = data.toJSONString();
+            writer.write(jsonStr);
+            writer.flush();
+            writer.close();
+        } else if (o instanceof String) {
             resp.setCharacterEncoding("utf-8");
             PrintWriter writer = resp.getWriter();
             writer.write((String) o);

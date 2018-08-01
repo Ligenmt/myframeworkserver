@@ -3,6 +3,7 @@ package com.ligen.server;
 import com.alibaba.fastjson.JSONObject;
 import com.ligen.framework.annotation.Controller;
 import com.ligen.framework.annotation.RequestMapping;
+import com.ligen.framework.annotation.RequestParam;
 import com.ligen.framework.bean.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +33,7 @@ public class DemoController {
     }
 
     @RequestMapping(value = "/index", method = "POST")
-    public String indexPost(HttpServletRequest request, HttpServletResponse response) {
-
-        return "hello";
+    public String indexPost(@RequestParam(value = "name") String name) {
+        return "hello, " + name;
     }
 }
