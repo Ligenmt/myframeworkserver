@@ -2,6 +2,7 @@ package com.ligen.framework;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ligen.framework.annotation.RequestParam;
 import com.ligen.framework.bean.Data;
@@ -64,6 +65,8 @@ public class DispatchServlet extends HttpServlet {
         }
         //处理请求体
         String body = CodecUtil.decodeURL(StreamUtil.getString(req.getInputStream()));
+        JSONObject jsonInput = null;
+        JSONArray jsonArrayInput = null;
         if(!StringUtils.isEmpty(body)) {
             if(req.getHeader("Content-Type").equals("application/x-www-form-urlencoded")) {
                 String[] postparams = body.split("&");
@@ -74,8 +77,12 @@ public class DispatchServlet extends HttpServlet {
                         requestParams.put(key, value);
                     }
                 }
-            } else if(req.getHeader("Content-Type").equals("application/json")) {
-                //TODO json格式请求体
+            } else if(req.getHeader("Content-Type").startsWith("application/json")) {
+                try {
+                    jsonInput = JSON.parseObject(body);
+                } catch (Exception e) {
+                    jsonArrayInput = JSON.parseArray(body);
+                }
             } else {
                 //其它
             }
@@ -89,14 +96,16 @@ public class DispatchServlet extends HttpServlet {
             args = new Object[parameterTypes.length];
             for (int i=0; i<parameterTypes.length; i++) {
                 Class<?> parameterType = parameterTypes[i];
-
                 String canonicalName = parameterType.getCanonicalName();
                 if (canonicalName.equals("javax.servlet.http.HttpServletRequest")) {
                     args[i] = req;
                 } else if (canonicalName.equals("javax.servlet.http.HttpServletResponse")) {
                     args[i] = resp;
+                } else if (canonicalName.equals("com.alibaba.fastjson.JSONObject")) {
+                    args[i] = jsonInput;
+                } else if (canonicalName.equals("com.alibaba.fastjson.JSONArray")) {
+                    args[i] = jsonArrayInput;
                 }
-//                Annotation[] annotations = parameters[i].getAnnotations();
                 if (parameters[i].isAnnotationPresent(RequestParam.class)) {
                     RequestParam requestParam = parameters[i].getAnnotation(RequestParam.class);
                     String value = requestParam.value();

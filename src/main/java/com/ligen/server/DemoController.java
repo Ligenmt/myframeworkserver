@@ -1,5 +1,6 @@
 package com.ligen.server;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ligen.framework.annotation.Controller;
 import com.ligen.framework.annotation.RequestMapping;
@@ -35,5 +36,15 @@ public class DemoController {
     @RequestMapping(value = "/index", method = "POST")
     public String indexPost(@RequestParam(value = "name") String name) {
         return "hello, " + name;
+    }
+
+    @RequestMapping(value = "/json", method = "POST")
+    public String json(JSONObject json) {
+        return json.toJSONString();
+    }
+
+    @RequestMapping(value = "/jsonarray", method = "POST")
+    public String jsonArray(JSONArray json) {
+        return json.toJSONString();
     }
 }
