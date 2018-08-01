@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds">
+  <property name="log_home" value="./logs" />
+  <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>%-20(%d{yyyy-MMM-dd HH:mm:ss} [%thread]) %-5level %logger{80} [%line] -%msg%n</pattern>
+    </layout>
+  </appender>
+  <appender name="STDFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${log_home}/catalina.out</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${log_home}/catalina-%d{yyyy-MM-dd}.out</fileNamePattern>
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>
+        %-20(%d{yyyy-MMM-dd HH:mm:ss} [%thread]) %-5level %logger{80} [%line] -%msg%n
+      </pattern>
+      <charset>UTF-8</charset> <!-- 此处设置字符集 -->
+    </encoder>
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="STDOUT"/>
+    <!--<appender-ref ref="STDFILE"/>-->
+  </root>
+  <!--<logger name="org.springframework" level="off"/>-->
+</configuration>
