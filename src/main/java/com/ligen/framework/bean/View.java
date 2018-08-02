@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * 返回视图对象
- * Created by com.com.com.ligen on 2017/5/31.
+ * Created by ligen on 2017/5/31.
  */
 public class View {
 

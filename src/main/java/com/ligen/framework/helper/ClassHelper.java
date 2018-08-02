@@ -3,6 +3,8 @@ package com.ligen.framework.helper;
 import com.ligen.framework.annotation.Controller;
 import com.ligen.framework.annotation.Service;
 import com.ligen.framework.util.ClassUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,11 +14,13 @@ import java.util.Set;
  */
 public final class ClassHelper {
 
+    static Logger log = LoggerFactory.getLogger(ClassHelper.class);
+
     private static Set<Class<?>> CLASS_SET;
     static {
-        System.out.println("ClassHelper init");
+        log.info("ClassHelper init");
         String basePackage = ConfigHelper.getAppBasePackage();
-        System.out.println("扫描package:" + basePackage);
+        log.info("扫描包路径:" + basePackage);
         CLASS_SET = ClassUtil.getClassSet(basePackage);
     }
 

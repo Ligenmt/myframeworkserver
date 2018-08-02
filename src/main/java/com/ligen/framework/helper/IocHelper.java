@@ -2,6 +2,8 @@ package com.ligen.framework.helper;
 
 import com.ligen.framework.annotation.Autowired;
 import com.ligen.framework.util.ReflectionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -11,8 +13,8 @@ import java.util.Map;
  */
 public class IocHelper {
 
+    static Logger log = LoggerFactory.getLogger(IocHelper.class);
     static {
-
         Map<Class<?>, Object> beanMap = BeanHelper.getBeanMap();
         for (Map.Entry<Class<?>, Object> entry : beanMap.entrySet()) {
 
@@ -31,7 +33,7 @@ public class IocHelper {
                 }
             }
         }
-        System.out.println("IocHelper inited");
+        log.info("IocHelper inited");
     }
     public static void init(){}
 }

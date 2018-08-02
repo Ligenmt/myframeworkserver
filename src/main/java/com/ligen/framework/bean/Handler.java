@@ -3,7 +3,7 @@ package com.ligen.framework.bean;
 import java.lang.reflect.Method;
 
 /**
- * Created by com.com.com.ligen on 2017/5/29.
+ * Created by ligen on 2017/5/29.
  */
 public class Handler {
 

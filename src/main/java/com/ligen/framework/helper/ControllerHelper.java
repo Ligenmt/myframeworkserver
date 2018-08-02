@@ -3,6 +3,8 @@ package com.ligen.framework.helper;
 import com.ligen.framework.annotation.RequestMapping;
 import com.ligen.framework.bean.Handler;
 import com.ligen.framework.bean.Request;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -14,10 +16,11 @@ import java.util.Set;
  */
 public class ControllerHelper {
 
+    static Logger log = LoggerFactory.getLogger(ControllerHelper.class);
     private static Map<Request, Handler> REQUEST_MAP = new HashMap<>();
 
     static {
-        System.out.println("ControllerHelper inited");
+        log.info("ControllerHelper inited");
         Set<Class<?>> controllerClassSet = ClassHelper.getControllerClassSet();
         for (Class<?> cls : controllerClassSet) {
             Method[] methods = cls.getDeclaredMethods();

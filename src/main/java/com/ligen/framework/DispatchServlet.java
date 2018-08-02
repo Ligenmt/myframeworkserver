@@ -5,13 +5,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ligen.framework.annotation.RequestParam;
-import com.ligen.framework.bean.Data;
 import com.ligen.framework.bean.Handler;
-import com.ligen.framework.bean.Params;
 import com.ligen.framework.helper.BeanHelper;
 import com.ligen.framework.helper.ControllerHelper;
-import com.ligen.framework.util.*;
+import com.ligen.framework.util.CodecUtil;
+import com.ligen.framework.util.HelperLoader;
+import com.ligen.framework.util.ReflectionUtil;
+import com.ligen.framework.util.StreamUtil;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -21,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Enumeration;
@@ -33,16 +35,14 @@ import java.util.Map;
  */
 public class DispatchServlet extends HttpServlet {
 
-    public DispatchServlet() {
-        System.out.println("DispatchServlet");
-    }
-
+    Logger log = LoggerFactory.getLogger(DispatchServlet.class);
     @Override
     public void init(ServletConfig servletConfig) throws ServletException {
         HelperLoader.init();
 //        String appBasePackage = ConfigHelper.getAppBasePackage();
 //        System.out.println(appBasePackage);
         ServletContext servletContext = servletConfig.getServletContext();
+        log.info("DispatchServlet inited");
     }
 
     @Override
@@ -81,7 +81,11 @@ public class DispatchServlet extends HttpServlet {
                 try {
                     jsonInput = JSON.parseObject(body);
                 } catch (Exception e) {
-                    jsonArrayInput = JSON.parseArray(body);
+                    try {
+                        jsonArrayInput = JSON.parseArray(body);
+                    } catch (Exception e1) {
+                        throw new RuntimeException("请求体JSON格式非法:" + body, e);
+                    }
                 }
             } else {
                 //其它
