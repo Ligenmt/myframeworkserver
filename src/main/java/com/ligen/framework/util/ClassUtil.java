@@ -1,10 +1,12 @@
 package com.ligen.framework.util;
 
+import com.ligen.framework.annotation.PostConstruct;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -26,16 +28,12 @@ public class ClassUtil {
      * 加载类,初始化是指是否执行类的静态代码块
      */
     public static Class<?> loadClass(String className, boolean isInitialized) {
-
         Class<?> cls;
-
         try {
             cls = Class.forName(className, isInitialized, getClassLoader());
         } catch (ClassNotFoundException e) {
-//            logger.error("load class failure", e);
             throw new RuntimeException(e);
         }
-
         return cls;
 
     }
@@ -46,7 +44,6 @@ public class ClassUtil {
     public static Set<Class<?>> getClassSet(String packageName) {
 
         Set<Class<?>> classSet = new HashSet<Class<?>>();
-
         try {
             Enumeration<URL> resources = getClassLoader().getResources(packageName.replaceAll(".", "/"));
             while (resources.hasMoreElements()) {
@@ -78,11 +75,8 @@ public class ClassUtil {
                 }
             }
         } catch (IOException e) {
-//            logger.error("get class set failure", e);
             throw new RuntimeException(e);
-
         }
-
         return classSet;
     }
 
@@ -93,13 +87,11 @@ public class ClassUtil {
                 return (file.isFile() && file.getName().endsWith(".class")) || file.isDirectory();
             }
         });
-
         for (File file : files) {
             String fileName = file.getName();
             if (file.isFile()) {
                 String className = fileName.substring(0, fileName.lastIndexOf("."))
                         .replaceAll("/", ".");
-
                 if(StringUtils.isNotEmpty(packageName)) {
                     className = packageName + "." + className;
                 }
@@ -121,7 +113,6 @@ public class ClassUtil {
     }
 
     private static void doAddClass(Set<Class<?>> classSet, String className) {
-
         Class<?> cls = loadClass(className, false);
         classSet.add(cls);
     }

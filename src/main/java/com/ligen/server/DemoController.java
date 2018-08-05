@@ -3,6 +3,7 @@ package com.ligen.server;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ligen.framework.annotation.Controller;
+import com.ligen.framework.annotation.PostConstruct;
 import com.ligen.framework.annotation.RequestMapping;
 import com.ligen.framework.annotation.RequestParam;
 import com.ligen.framework.bean.Data;
@@ -19,6 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 public class DemoController {
 
     Logger logger = LoggerFactory.getLogger(getClass());
+
+    @PostConstruct
+    public void init() {
+        System.out.println("DemoController inited");
+    }
 
     @RequestMapping(value = "/a", method = "get")
     public Data a() {

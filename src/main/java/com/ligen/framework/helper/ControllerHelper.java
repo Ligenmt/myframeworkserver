@@ -16,7 +16,7 @@ import java.util.Set;
  */
 public class ControllerHelper {
 
-    static Logger log = LoggerFactory.getLogger(ControllerHelper.class);
+    private static Logger log = LoggerFactory.getLogger(ControllerHelper.class);
     private static Map<Request, Handler> REQUEST_MAP = new HashMap<>();
 
     static {
@@ -25,7 +25,6 @@ public class ControllerHelper {
         for (Class<?> cls : controllerClassSet) {
             Method[] methods = cls.getDeclaredMethods();
             for (Method method : methods) {
-
                 if(method.isAnnotationPresent(RequestMapping.class)) {
                     RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
                     String mapValue = requestMapping.value().toLowerCase();
@@ -37,11 +36,9 @@ public class ControllerHelper {
                     if (mapMethod == null) {
                         mapMethod = "get";
                     }
-
                     Request request = new Request(mapMethod, mapValue);
                     Handler handler = new Handler(cls, method);
                     REQUEST_MAP.put(request, handler);
-
                 }
             }
 
@@ -56,7 +53,7 @@ public class ControllerHelper {
             path = path.substring(1);
         }
         Request request = new Request(method, path);
-        return  REQUEST_MAP.get(request);
+        return REQUEST_MAP.get(request);
     }
 
 }
