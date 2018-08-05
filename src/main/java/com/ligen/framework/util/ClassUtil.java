@@ -13,14 +13,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by com.com.com.ligen on 2017/5/28.
+ * Created by ligen on 2017/5/28.
  */
 public class ClassUtil {
 
 //    private static final Logger logger = LoggerFactory.getLogger(ClassUtil.class);
 
     public static ClassLoader getClassLoader() {
-
         return Thread.currentThread().getContextClassLoader();
     }
 

@@ -4,18 +4,21 @@ import com.ligen.framework.helper.BeanHelper;
 import com.ligen.framework.helper.ClassHelper;
 import com.ligen.framework.helper.ControllerHelper;
 import com.ligen.framework.helper.IocHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by com.com.com.ligen on 2017/5/29.
  */
 public class HelperLoader {
 
-
+    static Logger log = LoggerFactory.getLogger(HelperLoader.class);
     static {
-        System.out.println("HelperLoader");
+        log.info("HelperLoader初始化");
     }
 
     public static void init() {
+        log.info("HelperLoader初始化开始");
         Class<?>[] classList = {
             ClassHelper.class,
             BeanHelper.class,
@@ -28,5 +31,6 @@ public class HelperLoader {
         }
         IocHelper.init();
         ControllerHelper.init();
+        log.info("HelperLoader初始化结束");
     }
 }

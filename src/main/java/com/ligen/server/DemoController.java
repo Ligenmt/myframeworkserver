@@ -26,12 +26,6 @@ public class DemoController {
         System.out.println("DemoController inited");
     }
 
-    @RequestMapping(value = "/a", method = "get")
-    public Data a() {
-        Data data = new Data();
-        return data;
-    }
-
     @RequestMapping(value = "/", method = "get")
     public String index(HttpServletRequest request, HttpServletResponse response) {
         String name = request.getParameter("name");

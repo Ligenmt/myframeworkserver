@@ -9,15 +9,15 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
- * Created by com.com.com.ligen on 2017/5/29.
+ * Created by ligen on 2017/5/29.
  */
 public class IocHelper {
 
     static Logger log = LoggerFactory.getLogger(IocHelper.class);
     static {
+        log.info("IocHelper初始化开始");
         Map<Class<?>, Object> beanMap = BeanHelper.getBeanMap();
         for (Map.Entry<Class<?>, Object> entry : beanMap.entrySet()) {
-
             Class<?> beanClass = entry.getKey();
             Object beanInstance = entry.getValue();
             Field[] fields = beanClass.getDeclaredFields();
@@ -33,7 +33,7 @@ public class IocHelper {
                 }
             }
         }
-        log.info("IocHelper inited");
+        log.info("IocHelper初始化完成");
     }
     public static void init(){}
 }

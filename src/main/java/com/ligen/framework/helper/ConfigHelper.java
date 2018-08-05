@@ -6,7 +6,7 @@ import com.ligen.framework.util.PropsUtil;
 import java.util.Properties;
 
 /**
- * Created by com.com.com.ligen on 2017/5/29.
+ * Created by ligen on 2017/5/29.
  */
 public final class ConfigHelper {
 

@@ -31,16 +31,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by com.com.com.ligen on 2017/5/29.
+ * Created by ligen on 2017/5/29.
  */
 public class DispatchServlet extends HttpServlet {
 
     Logger log = LoggerFactory.getLogger(DispatchServlet.class);
     @Override
     public void init(ServletConfig servletConfig) throws ServletException {
+        log.info("DispatchServlet init start");
         HelperLoader.init();
-//        String appBasePackage = ConfigHelper.getAppBasePackage();
-//        System.out.println(appBasePackage);
         ServletContext servletContext = servletConfig.getServletContext();
         log.info("DispatchServlet inited");
     }

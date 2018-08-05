@@ -7,11 +7,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * Created by com.com.com.ligen on 2017/5/29.
+ * Created by ligen on 2017/5/29.
  */
 public class ReflectionUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(ReflectionUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(ReflectionUtil.class);
 
     public static Object newInstance(Class<?> cls) {
         Object instance;
@@ -19,7 +19,7 @@ public class ReflectionUtil {
         try {
             instance = cls.newInstance();
         } catch (Exception e) {
-            logger.error("new instance failure", e);
+            log.error("new instance failure", e);
             throw new RuntimeException(e);
         }
         return instance;
@@ -32,7 +32,7 @@ public class ReflectionUtil {
             method.setAccessible(true);
             result = method.invoke(obj, args);
         } catch (Exception e) {
-            logger.error("invoke method failure", e);
+            log.error("invoke method failure", e);
             throw new RuntimeException(e);
         }
         return result;
@@ -43,7 +43,7 @@ public class ReflectionUtil {
             field.setAccessible(true);
             field.set(obj, value);
         } catch (IllegalAccessException e) {
-            logger.error("set field failure", e);
+            log.error("set field failure", e);
             throw new RuntimeException(e);
         }
     }
