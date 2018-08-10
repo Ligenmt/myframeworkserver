@@ -6,7 +6,6 @@ import com.ligen.framework.annotation.Controller;
 import com.ligen.framework.annotation.PostConstruct;
 import com.ligen.framework.annotation.RequestMapping;
 import com.ligen.framework.annotation.RequestParam;
-import com.ligen.framework.bean.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
