@@ -20,7 +20,6 @@ public class BeanLoader {
 
     private static final Logger log = LoggerFactory.getLogger(BeanLoader.class);
     private static Map<Class<?>, Object> BEAN_MAP = new HashMap<>(16);
-    private static Map<String, Object> EARLY_SINGLETON_OBJECTS = new HashMap<String, Object>(16);
 
     static {
         log.info("BeanLoader初始化开始");
@@ -28,44 +27,8 @@ public class BeanLoader {
         Set<Class<?>> beanClassSet = ClassLoader.getBeanClassSet();
         for (Class<?> beanCls : beanClassSet) {
             Object o = ReflectionUtil.newInstance(beanCls);
-            EARLY_SINGLETON_OBJECTS.put(beanCls.getName(), o);
-        }
-        for (Class<?> beanCls : beanClassSet) {
-            Object o = EARLY_SINGLETON_OBJECTS.get(beanCls.getName());
-            //实现@Autowired注入Field，EARLY_SINGLETON_OBJECTS处理循环引用
-            try {
-                Field[] declaredFields = beanCls.getDeclaredFields();
-                for (Field field : declaredFields) {
-                    if (field.isAnnotationPresent(Autowired.class)) {
-                        Class<?> injectingClass = field.getType();
-                        Object injectingObject = EARLY_SINGLETON_OBJECTS.get(injectingClass.getName());
-                        if (injectingObject != null) {
-                            field.setAccessible(true);
-                            field.set(o, injectingObject);
-                        } else {
-                            throw new RuntimeException("自动注入实例失败:" + injectingClass.getName());
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("自动注入实例失败:" + beanCls.getName(), e);
-            }
-            try {
-                Method[] methods = beanCls.getMethods();
-                for (Method method : methods) {
-                    if (method.isAnnotationPresent(PostConstruct.class)) {
-                        method.invoke(o, null);
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("执行初始化方法失败:" + beanCls.getName(), e);
-            }
             BEAN_MAP.put(beanCls, o);
         }
-        EARLY_SINGLETON_OBJECTS.clear();
         log.info("BeanLoader初始化完成");
     }
 
