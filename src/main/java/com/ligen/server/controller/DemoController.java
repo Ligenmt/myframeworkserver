@@ -1,11 +1,10 @@
-package com.ligen.server;
+package com.ligen.server.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.ligen.framework.annotation.Controller;
-import com.ligen.framework.annotation.PostConstruct;
-import com.ligen.framework.annotation.RequestMapping;
-import com.ligen.framework.annotation.RequestParam;
+import com.ligen.framework.annotation.*;
+import com.ligen.framework.annotation.stereotype.Controller;
+import com.ligen.server.service.DemoService1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +19,9 @@ public class DemoController {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Autowired
+    DemoService1 demoService1;
+
     @PostConstruct
     public void init() {
         System.out.println("DemoController inited");
@@ -29,12 +31,12 @@ public class DemoController {
     public String index(HttpServletRequest request, HttpServletResponse response) {
         String name = request.getParameter("name");
         logger.info("index name:{}", name);
-        return "hello, " + name;
+        return demoService1.hello(name);
     }
 
     @RequestMapping(value = "/index", method = "POST")
     public String indexPost(@RequestParam(value = "name") String name) {
-        return "hello, " + name;
+        return demoService1.hello(name);
     }
 
     @RequestMapping(value = "/json", method = "POST")

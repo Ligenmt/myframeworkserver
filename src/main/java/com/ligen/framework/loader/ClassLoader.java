@@ -1,7 +1,7 @@
 package com.ligen.framework.loader;
 
-import com.ligen.framework.annotation.Controller;
-import com.ligen.framework.annotation.Service;
+import com.ligen.framework.annotation.stereotype.Controller;
+import com.ligen.framework.annotation.stereotype.Service;
 import com.ligen.framework.util.ClassUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,13 +17,14 @@ public final class ClassLoader {
     static Logger log = LoggerFactory.getLogger(ClassLoader.class);
 
     private static Set<Class<?>> CLASS_SET;
-    //TODO 从这里开始
+
     static {
         log.info("ClassLoader初始化开始");
         String basePackage = ConfigLoader.getAppBasePackage();
         log.info("扫描包路径:" + basePackage);
+        //加载路径下所有class
         CLASS_SET = ClassUtil.getClassSet(basePackage);
-        log.info("ClassLoader初始化完成");
+        log.info("ClassLoader初始化完成，加载Class数量: {}", CLASS_SET.size());
     }
 
     public static Set<Class<?>> getClassSet() {
