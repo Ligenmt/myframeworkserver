@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * Created by com.com.com.ligen on 2017/6/1.
+ * Created by ligen on 2017/6/1.
  */
 public class StreamUtil {
 

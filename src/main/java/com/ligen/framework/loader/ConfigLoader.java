@@ -1,4 +1,4 @@
-package com.ligen.framework.helper;
+package com.ligen.framework.loader;
 
 import com.ligen.framework.util.ConfigConstant;
 import com.ligen.framework.util.PropsUtil;
@@ -8,7 +8,7 @@ import java.util.Properties;
 /**
  * Created by ligen on 2017/5/29.
  */
-public final class ConfigHelper {
+public final class ConfigLoader {
 
 
     private static Properties CONFIG_PROPS;

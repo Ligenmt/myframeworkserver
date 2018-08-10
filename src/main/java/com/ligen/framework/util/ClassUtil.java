@@ -29,6 +29,7 @@ public class ClassUtil {
     public static Class<?> loadClass(String className, boolean isInitialized) {
         Class<?> cls;
         try {
+            //isInitialized为true则执行初始化，执行static静态方法，false则不执行
             cls = Class.forName(className, isInitialized, getClassLoader());
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);

@@ -1,4 +1,4 @@
-package com.ligen.framework.helper;
+package com.ligen.framework.loader;
 
 import com.ligen.framework.annotation.Autowired;
 import com.ligen.framework.util.ReflectionUtil;
@@ -11,12 +11,12 @@ import java.util.Map;
 /**
  * Created by ligen on 2017/5/29.
  */
-public class IocHelper {
+public class IocLoader {
 
-    static Logger log = LoggerFactory.getLogger(IocHelper.class);
+    static Logger log = LoggerFactory.getLogger(IocLoader.class);
     static {
-        log.info("IocHelper初始化开始");
-        Map<Class<?>, Object> beanMap = BeanHelper.getBeanMap();
+        log.info("IocLoader初始化开始");
+        Map<Class<?>, Object> beanMap = BeanLoader.getBeanMap();
         for (Map.Entry<Class<?>, Object> entry : beanMap.entrySet()) {
             Class<?> beanClass = entry.getKey();
             Object beanInstance = entry.getValue();
@@ -33,7 +33,7 @@ public class IocHelper {
                 }
             }
         }
-        log.info("IocHelper初始化完成");
+        log.info("IocLoader初始化完成");
     }
     public static void init(){}
 }

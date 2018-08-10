@@ -1,4 +1,4 @@
-package com.ligen.framework.helper;
+package com.ligen.framework.loader;
 
 import com.ligen.framework.annotation.RequestMapping;
 import com.ligen.framework.bean.Handler;
@@ -14,14 +14,14 @@ import java.util.Set;
 /**
  * Created by ligen on 2017/5/29.
  */
-public class ControllerHelper {
+public class ControllerLoader {
 
-    private static Logger log = LoggerFactory.getLogger(ControllerHelper.class);
+    private static Logger log = LoggerFactory.getLogger(ControllerLoader.class);
     private static Map<Request, Handler> REQUEST_MAP = new HashMap<>();
 
     static {
-        log.info("ControllerHelper inited");
-        Set<Class<?>> controllerClassSet = ClassHelper.getControllerClassSet();
+        log.info("ControllerLoader inited");
+        Set<Class<?>> controllerClassSet = ClassLoader.getControllerClassSet();
         for (Class<?> cls : controllerClassSet) {
             Method[] methods = cls.getDeclaredMethods();
             for (Method method : methods) {

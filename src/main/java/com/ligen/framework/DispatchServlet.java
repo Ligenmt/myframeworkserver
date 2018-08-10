@@ -6,10 +6,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ligen.framework.annotation.RequestParam;
 import com.ligen.framework.bean.Handler;
-import com.ligen.framework.helper.BeanHelper;
-import com.ligen.framework.helper.ControllerHelper;
+import com.ligen.framework.loader.BeanLoader;
+import com.ligen.framework.loader.ControllerLoader;
 import com.ligen.framework.util.CodecUtil;
-import com.ligen.framework.util.HelperLoader;
+import com.ligen.framework.util.Bootstrap;
 import com.ligen.framework.util.ReflectionUtil;
 import com.ligen.framework.util.StreamUtil;
 import org.apache.commons.lang.StringUtils;
@@ -39,7 +39,7 @@ public class DispatchServlet extends HttpServlet {
     @Override
     public void init(ServletConfig servletConfig) throws ServletException {
         log.info("DispatchServlet init start");
-        HelperLoader.init();
+        Bootstrap.init();
         ServletContext servletContext = servletConfig.getServletContext();
         log.info("DispatchServlet inited");
     }
@@ -51,9 +51,9 @@ public class DispatchServlet extends HttpServlet {
         String path = req.getRequestURI();
 
         //根据路由找到相应的Controller
-        Handler handler = ControllerHelper.getHandler(method, path);
+        Handler handler = ControllerLoader.getHandler(method, path);
         Class<?> controllerClass = handler.getControllerClass();
-        Object controllerBean = BeanHelper.getBean(controllerClass);
+        Object controllerBean = BeanLoader.getBean(controllerClass);
         Map<String, String> requestParams = new HashMap<>();
         //处理请求的携带参数
         Enumeration<String> parameterNames = req.getParameterNames();
